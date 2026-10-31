@@ -1,0 +1,405 @@
+/* ==========================================================================
+   RaceHub Professional Stylesheet (With Pure CSS Dropdown)
+   Palette: Racing Red (#E21B1B), Dark Slate (#1A1A1A), Pure White (#FFFFFF)
+   ========================================================================== */
+
+/* --- 1. Global Reset & Core Variables --- */
+:root {
+    --primary-red: #E21B1B;
+    --primary-red-hover: #C11313;
+    --dark-bg: #1A1A1A;
+    --dropdown-bg: #222222;
+    --light-bg: #F8F9FA;
+    --text-dark: #111111;
+    --border-color: #E0E0E0;
+    --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --transition-speed: 0.2s;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-stack);
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- 2. Header Layout --- */
+header {
+    background-color: var(--dark-bg);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 4px solid var(--primary-red);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 100;
+}
+
+/* Site Brand */
+.site-name {
+    font-size: 1.75rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+.main-menu {
+    position: relative;
+    display: inline-block;
+}
+
+/* Menu Trigger Button */
+.menu-button {
+    background: transparent;
+    border: 1px solid #444444;
+    color: #FFFFFF;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: all var(--transition-speed) ease;
+}
+
+.header-links li {
+    list-style: none;
+    margin: 20px;    
+}
+
+.header-links {
+    display: none;
+    background-color: var(--primary-red);
+    text-align: left;
+}
+
+.menu-button:hover,
+.main-menu:hover .menu-button {
+    background-color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+/* --- 4. Account Info & Action --- */
+.account-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.account-type {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #AAAAAA;
+    border: 1px solid #444444;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    background: #252525;
+}
+
+.account-info button {
+    background-color: var(--primary-red);
+    color: #FFFFFF;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.account-info button:hover {
+    background-color: var(--primary-red-hover);
+}
+
+/* --- 5. Main Content Area --- */
+main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+/* --- 6. Footer Component --- */
+footer {
+    background-color: #111111;
+    color: #888888;
+    padding: 2rem;
+    border-top: 1px solid #222222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 10;
+}
+
+footer .footer-links ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+footer a {
+    color: #888888;
+    text-decoration: none;
+    /* font-size: 0.85rem; */
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color var(--transition-speed) ease;
+}
+
+footer a:hover {
+    color: #FFFFFF;
+}
+
+.header-links a {
+    color: #FFFFFF;
+    text-decoration: none;
+    /* font-size: 0.85rem; */
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: color var(--transition-speed) ease;
+}
+
+.header-links a:hover {
+    color: var(--dark-bg);
+}
+
+
+/* --- 2. Typography --- */
+h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--dark-bg);
+    margin-bottom: 2rem;
+    border-left: 6px solid var(--primary-red);
+    padding-left: 1.25rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--dark-bg);
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+/* --- 3. Core Desktop Main Grid Layout --- */
+/* --- 4. Main 2-Column Layout Engine (NO HTML CHANGES) --- */
+@media (min-width: 992px) {
+    /* We turn the body into a layout manager grid specifically for desktop screens */
+    body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 450px) minmax(0, 850px) minmax(0, 1fr);
+        grid-template-areas:
+            "header header header header"
+            "nav nav nav nav"
+            ". title title ."
+            ". info calc ."
+            "footer footer footer footer";
+        gap: 0;
+    }
+
+    /* Assigning your exact HTML tags to their designated desktop grid spots */
+    header { grid-area: header; }
+    .header-links { grid-area: nav; }
+    h2 { grid-area: title; margin: 3rem 0 1rem 0; padding-left: 1.25rem; }
+    .calculator-info { grid-area: info; margin: 1rem 2rem 2rem 0; padding: 2.5rem; }
+    .calculator { grid-area: calc; margin: 1rem 0 2rem 0; padding: 2.5rem; }
+    footer { grid-area: footer; }
+
+    .calculator-info {
+        position: sticky;
+        top: 2rem; /* Keeps your instructions card floating smoothly as you scroll */
+    }
+}
+
+/* --- 4. Calculator Information Panel --- */
+.calculator-info {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.calculator-info p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.calculator-info ol {
+    margin-left: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+}
+
+.calculator-info li {
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+/* --- 5. Main Calculator Application Wrapper --- */
+.calculator {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+/* --- 6. Inputs & Result Row (Fixed Alignment Grid) --- */
+.calculator-input {
+    display: grid;
+    /* Grid track layout: 2 equal flexible columns + 1 rigid column for the pace box */
+    grid-template-columns: repeat(2, 1fr) 180px; 
+    gap: 1.5rem;
+    align-items: flex-end; /* Perfectly lines up input boxes and the desired pace box vertically */
+    width: 100%;
+}
+
+.info-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0; /* Prevents text overflow bugs inside grid containers */
+}
+
+.info-input p:first-child {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+/* Input Fields styling */
+.text-input {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--text-dark);
+    background-color: #FFFFFF;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    height: 50px; /* Lock height to match result boxes */
+    transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 4px rgba(226, 27, 27, 0.15);
+}
+
+.text-input::placeholder {
+    color: #BBBBBB;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+/* --- Hide Web Browser Native Spin Arrows (Standards Compliant) --- */
+/* Chrome, Safari, Edge, Opera */
+.text-input::-webkit-outer-spin-button,
+.text-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox & Modern Browsers Standard */
+.text-input[type="number"] {
+    appearance: textfield; /* Using the modern, official standard property */
+}
+
+
+/* Primary Result Box Styling (Desired Pace) */
+#desired-pace {
+    background-color: var(--primary-red);
+    color: #FFFFFF;
+    height: 50px; /* Matches input sizes perfectly */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 900;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 4px 12px rgba(226, 27, 27, 0.25);
+    width: 100%;
+}
+
+/* --- 7. Extra Preset Dashboards --- */
+.calculator-extra {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    border-top: 2px dashed var(--border-color);
+    padding-top: 2rem;
+}
+
+.calculator-extra > div {
+    background-color: var(--dark-bg);
+    color: #FFFFFF;
+    padding: 1.75rem 1.25rem;
+    border-radius: 6px;
+    text-align: center;
+    border-bottom: 4px solid var(--primary-red);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.calculator-extra > div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.calculator-extra p:first-child {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #AAAAAA;
+    margin-bottom: 0.5rem;
+}
+
+.calculator-extra p:last-child {
+    font-size: 1.85rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+    /* Collapse horizontal structures back into neat vertical grids for mobile viewports */
+    .calculator-input {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+    
+    .calculator-extra {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
