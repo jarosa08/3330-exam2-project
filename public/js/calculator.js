@@ -96,3 +96,10 @@ function calculate(totalSeconds, percentage) {
     else
         return (step1-step2) + ":" + "0" + step3;
 }
+
+$(document).ready( () => {
+    $(".menu-button").on("click", () => {
+        // clean, sleek blind effect down from the top
+        $(".header-links").toggle("blind", { direction: "vertical" }, 300);
+    });
+});
