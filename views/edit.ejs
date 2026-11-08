@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaceHub</title>
+    <!-- images from magnific -->
+    <!-- css done with assitance of ai -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
+</head>
+
+<body>
+
+    <!-- header section -->
+    <%- include("partials/header.ejs")%>
+
+    <nav class="header-links">
+        <!-- links section -->
+        <%- include("partials/links.ejs")%>
+
+    </nav>
+
+    <main>
+        <div>
+        <h2>Race - Edit</h2>
+        <form id="editRaceForm">
+            <div class="edit-race">
+                <label for="edit-name-input">Current Race Name: <b><%= races.name %></b></label>
+                <br>
+                <input type="text" id="edit-name-input" name="edit-name-input">
+            </div>
+                
+            <div class="edit-race">
+                <label for="edit-event-input">Current Date of Event: <b><%= races.date %></b></label>
+                <br>
+                <input type="date" id="edit-event-input" name="edit-event-input">
+            </div>
+
+            <div class="edit-race">
+                <label for="edit-location-input">Current Location: <b><%= races.location %></b></label>
+                <br>
+                <input type="text" id="edit-location-input" name="edit-location-input">
+            </div>
+
+            <div class="edit-race">
+                <label for="edit-info-input">Current Info: <b><%= races.info %></b></label>
+                <br>
+                <input type="text" id="edit-info-input" name="edit-info-input">
+            </div>
+
+            <div class="edit-race">
+                <label for="edit-timers-input">Current Timers: <b><%= races.timedBy %></b></label>
+                <br>
+                <input type="text" id="edit-timedBy-input" name="edit-timedBy-input">
+            </div>
+
+
+            <div class="update">
+                <button id="update-button" type="submit" data-url="<%= races.event_url %>">UPDATE</button>
+            </div>
+        </form>
+        </div>
+    </main>
+        
+    <!-- footer section -->
+    <%- include("partials/footer.ejs")%>
+
+    <!-- include js -->
+    <script src="/js/calculator.js"></script>
+    <script src="/js/login.js"></script>
+
+</body>
+</html>

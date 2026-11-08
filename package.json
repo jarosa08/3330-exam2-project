@@ -1,0 +1,29 @@
+{
+  "name": "race-management-app",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/jarosa08/3330-exam2-project#readme",
+  "bugs": {
+    "url": "https://github.com/jarosa08/3330-exam2-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jarosa08/3330-exam2-project.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.4.0",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "nodemon": "^3.1.14"
+  }
+}

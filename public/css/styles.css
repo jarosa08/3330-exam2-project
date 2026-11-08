@@ -128,7 +128,8 @@ header {
     background: #252525;
 }
 
-.account-info button {
+.account-info a {
+    text-decoration: none;
     background-color: var(--primary-red);
     color: #FFFFFF;
     border: none;
@@ -141,7 +142,7 @@ header {
     transition: background-color var(--transition-speed) ease;
 }
 
-.account-info button:hover {
+.account-info a:hover {
     background-color: var(--primary-red-hover);
 }
 
@@ -397,7 +398,7 @@ footer {
 
 @media (max-width: 768px) {
     header {
-        flex-direction: column;
+        /* flex-direction: column; */
         gap: 1rem;
         text-align: center;
     }
@@ -594,7 +595,7 @@ main section li::before {
 }
 
 /* --- 4. Gender Radio Options Row Layout Lineup --- */
-.gender {    
+.gender, .account-types{    
     /* Enforces inline horizontal structures cleanly across desktop and mobile screens */
     display: flex !important;
     flex-direction: row !important;
@@ -603,12 +604,12 @@ main section li::before {
     gap: 1rem !important;
 }
 
-.gender > label:first-of-type {
+.gender > label:first-of-type, .account-types > label:first-of-type  {
     width: 100%;
     margin-bottom: 0.25rem;
 }
 
-.gender label:not(:first-of-type) {
+.gender label:not(:first-of-type), .account-types label:not(:first-of-type) {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
@@ -619,7 +620,7 @@ main section li::before {
     letter-spacing: 0;
 }
 
-.gender input[type="radio"] {
+.gender input[type="radio"], .account-types input[type="radio"] {
     accent-color: var(--primary-red); /* Styles native checkboxes racing red */
     width: 18px;
     height: 18px;
@@ -633,7 +634,7 @@ main section li::before {
 }
 
 /* --- 5. Submission Execution Continuous Button Action --- */
-.continue button {
+.continue button,.update button{
     width: 100%;
     background-color: var(--primary-red);
     color: #FFFFFF;
@@ -649,11 +650,11 @@ main section li::before {
     box-shadow: 0 4px 12px rgba(226, 27, 27, 0.2);
 }
 
-.continue button:hover {
+.continue button:hover, .update button:hover {
     background-color: var(--primary-red-hover);
 }
 
-.continue button:active {
+.continue button:active, .update button:active {
     transform: scale(0.98);
 }
 
@@ -667,3 +668,38 @@ main section li::before {
         padding: 1.5rem; /* Reduces container padding gaps gracefully for smaller touchscreens */
     }
 }
+
+.main-link {
+    color:#111111;
+}
+
+.main-link:hover {
+    color:#C11313;
+}
+
+.buttons {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: left;
+    margin: -10px;
+}
+
+.race-buttons , .race-register-button{
+    background-color:red;
+    border-radius: 10px;
+    border: none;
+    color:white;
+    font-size: 1.15em;
+    font-weight: 600;
+    padding: 3px;
+    width: 110px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.race-buttons:hover, .race-register-button:hover {
+    background-color:var(--primary-red-hover);
+}
+

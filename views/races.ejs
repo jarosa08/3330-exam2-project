@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaceHub</title>
+    <!-- images from magnific -->
+    <!-- css done with assitance of ai -->
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
+</head>
+
+<body>
+
+    <!-- header section -->
+    <%- include("partials/header.ejs")%>
+
+    <nav class="header-links">
+        <!-- links section -->
+        <%- include("partials/links.ejs")%>
+
+    </nav>
+
+    <main>
+        <h2>Races</h2>
+        <% const today = new Date().toISOString().split('T')[0]; %>
+
+
+        <!-- <div class="races-registered runner-only">
+            <h3>Registered Races</h3>
+            <hr>
+            <br>
+            <div>
+                <% if(locals.races) {%>
+                    <% races.forEach((race) => { %>
+                            <section>
+                                <div>
+                                    <h4><%= race.name %></h4>
+                                    <ul>
+                                        <li><%= race.date %></li>
+                                        <li><%= race.location %></li>
+                                        <li><%= race.info %></li>
+                                        <br>
+                                        <li>Registered: <%= race.currentRunners %>/<%= race.maxRunners %></li>
+                                        <li>Timed By: <%= race.timedBy %></li>
+                                        <li>Posted By: <%= race.postedBy %></li>
+                                    </ul>
+                                </div>
+                            </section>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div> -->
+
+        <div class="races-past">
+            <h3>Past Races</h3>
+            <hr>
+            <br>
+            <div>
+                <% if(locals.races) {%>
+                    <% races.forEach((race) => { %>
+                        <% if (race.date < today) {%>
+                            <section>
+                                <div>
+                                    <h4><%= race.name %></h4>
+                                    <ul>
+                                        <li><%= race.date %></li>
+                                        <li><%= race.location %></li>
+                                        <li><%= race.info %></li>
+                                        <br>
+                                        <li>Registered: <%= race.currentRunners %>/<%= race.maxRunners %></li>
+                                        <li>Timed By: <%= race.timedBy %></li>
+                                        <li>Posted By: <%= race.postedBy %></li>
+                                    </ul>
+                                    <div class="buttons">
+                                        <a href="/race/<%= race.event_url %>" class="race-buttons runner-only">Results</a>
+                                    </div>
+                                </div>
+                            </section>
+                        <% } %>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="races-present">
+            <h3>Current Races</h3>
+            <hr>
+            <br>
+            <div>
+                <% if(locals.races) {%>
+                    <% races.forEach((race) => { %>
+                        <% if (race.date == today) {%>
+                            <section>
+                                <div>
+                                    <h4><%= race.name %></h4>
+                                    <ul>
+                                        <li><%= race.date %></li>
+                                        <li><%= race.location %></li>
+                                        <li><%= race.info %></li>
+                                        <br>
+                                        <li>Registered: <%= race.currentRunners %>/<%= race.maxRunners %></li>
+                                        <li>Timed By: <%= race.timedBy %></li>
+                                        <li>Posted By: <%= race.postedBy %></li>
+                                    </ul>
+                                    <div class="buttons">
+                                        <a href="/race/edit/<%=race.event_url%>" class="race-buttons organizer-only">Edit</a>
+                                        <a href="/race/<%= race.event_url %>" class="race-buttons runner-only">Results</a>
+                                        <!-- <button type="button" class="race-buttons runner-only">Register</button> -->
+                                    </div>
+                                </div>
+                            </section>
+                        <% } %>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="races-future">
+            <h3>Upcoming Races</h3>
+            <hr>
+            <br>
+            <div>
+                <% if(locals.races) {%>
+                    <% races.forEach((race) => { %>
+                        <% if (race.date > today) {%>
+                            <section>
+                                <div>
+                                    <h4><%= race.name %></h4>
+                                    <ul>
+                                        <li><%= race.date %></li>
+                                        <li><%= race.location %></li>
+                                        <li><%= race.info %></li>
+                                        <br>
+                                        <li>Registered: <%= race.currentRunners %>/<%= race.maxRunners %></li>
+                                        <li>Timed By: <%= race.timedBy %></li>
+                                        <li>Posted By: <%= race.postedBy %></li>
+                                    </ul>
+                                    <div class="buttons">
+                                        <a href="/race/edit/<%=race.event_url%>" class="race-buttons organizer-only">Edit</a>
+                                        <button type="button" class="race-buttons runner-only race-register-button" onclick="register(this)">Register</button>
+                                    </div>
+                                </div>
+                            </section>
+                        <% } %>
+                    <% }); %>
+                <% } %>
+            </div>
+        </div>
+
+    </main>
+        
+    <!-- footer section -->
+    <%- include("partials/footer.ejs")%>
+
+    <!-- include js -->
+    <script src="/js/calculator.js"></script>
+    <script src="/js/login.js"></script>
+
+</body>
+</html>

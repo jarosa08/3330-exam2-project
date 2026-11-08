@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaceHub</title>
+    <!-- images from magnific -->
+    <!-- css done with assitance of ai -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
+</head>
+
+<body>
+
+    <!-- header section -->
+    <%- include("partials/header.ejs")%>
+
+    <nav class="header-links">
+        <!-- links section -->
+        <%- include("partials/links.ejs")%>
+
+    </nav>
+
+    <main>
+        <h2><%=results.race_info.event_name%> - Results</h2>
+        <div>
+            <div>
+                <% for (let gender in results.divisions) { %>
+                <h3 class="gender-heading"><%= gender.toUpperCase() %> DIVISIONS</h2>
+                <hr>
+                <% for (let ageGroup in results.divisions[gender]) { %>
+                    <h3>Division: <%= ageGroup %></h3>
+                    
+                    <table border="1" cellpadding="8" style="border-collapse: collapse; margin-bottom: 20px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Place</th>
+                                <th>Bib</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Time</th>
+                                <th>Pace</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 3. Loop through individual runners inside this specific age group array -->
+                            <% results.divisions[gender][ageGroup].forEach(runner => { %>
+                                <tr>
+                                    <td><strong><%= runner.place %></strong></td>
+                                    <td><%= runner.bib %></td>
+                                    <td><%= runner.name %></td>
+                                    <td><%= runner.age %></td>
+                                    <td><%= runner.time %></td>
+                                    <td><%= runner.pace %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } %>
+            <% } %>
+            </div>
+            <hr>
+            <h3>Distance: <%=results.race_info.distance%></h3>
+            <h3>Total Participants: <%=results.race_info.total_participants%></h3>
+        </div>
+    </main>
+        
+    <!-- footer section -->
+    <%- include("partials/footer.ejs")%>
+
+    <!-- include js -->
+    <script src="/js/calculator.js"></script>
+    <script src="/js/login.js"></script>
+
+</body>
+</html>

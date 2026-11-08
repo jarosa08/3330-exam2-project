@@ -1,0 +1,22 @@
+<header>
+    <div class="main-menu">
+        <button class="menu-button"><b>MENU</b></button>
+    </div>
+
+    <div>
+        <h1 class="site-name">RACEHUB</h1>
+    </div>
+
+    <div class="account-info">
+        <!-- <p class="account-type" id="current-account-type">GUEST</p> -->
+        <!-- <a href="/login"><b>ACCOUNT</b></a> -->
+        <% if (locals.user) { %>
+            <p><%= user.firstName %> <%= user.lastName %></p>
+            <p class="account-type" id="current-account-type"><%= user.accountType %></p>
+        <% } else { %>
+            <p class="account-type" id="current-account-type">GUEST</p>
+            <a href="/login"><b>ACCOUNT</b></a>
+        <% } %>
+
+    </div>
+</header>
