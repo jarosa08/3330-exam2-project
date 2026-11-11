@@ -68,51 +68,51 @@ $(document).ready( () => {
 
 
     // change account view based off accout type
-    let currentAccountType = $("#current-account-type").html();
+    // let currentAccountType = $("#current-account-type").html();
 
-    // guest , hide organizer and runner buttons
-    if (currentAccountType == "GUEST") {
-        let organizerItems = document.querySelectorAll(".organizer-only");
-        organizerItems.forEach(item => {
-            item.style.display = "none";
-        });
+    // // guest , hide organizer and runner buttons
+    // if (currentAccountType == "GUEST") {
+    //     let organizerItems = document.querySelectorAll(".organizer-only");
+    //     organizerItems.forEach(item => {
+    //         item.style.display = "none";
+    //     });
 
-        let runnerItems = document.querySelectorAll(".runner-only");
-        runnerItems.forEach(item => {
-            item.style.display = "none";
-        });
+    //     let runnerItems = document.querySelectorAll(".runner-only");
+    //     runnerItems.forEach(item => {
+    //         item.style.display = "none";
+    //     });
 
-        // let registeredRaces = document.querySelectorAll(".races-registered");
-        // registeredRaces.forEach(item => {
-        //     item.style.display = "none";
-        // });
-    }
+    //     // let registeredRaces = document.querySelectorAll(".races-registered");
+    //     // registeredRaces.forEach(item => {
+    //     //     item.style.display = "none";
+    //     // });
+    // }
 
-    // organizer , hide runner buttons
-    if (currentAccountType == "ORGANIZER") {
-        let organizerItems = document.querySelectorAll(".organizer-only");
-        organizerItems.forEach(item => {
-            item.style.display = "block";
-        });
+    // // organizer , hide runner buttons
+    // if (currentAccountType == "ORGANIZER") {
+    //     let organizerItems = document.querySelectorAll(".organizer-only");
+    //     organizerItems.forEach(item => {
+    //         item.style.display = "block";
+    //     });
         
-        let runnerItems = document.querySelectorAll(".runner-only");
-        runnerItems.forEach(item => {
-            item.style.display = "none";
-        });
-    }
+    //     let runnerItems = document.querySelectorAll(".runner-only");
+    //     runnerItems.forEach(item => {
+    //         item.style.display = "none";
+    //     });
+    // }
 
-    // runner , hide organizer buttons
-    if (currentAccountType == "RUNNER") {
-        let organizerItems = document.querySelectorAll(".organizer-only");
-        organizerItems.forEach(item => {
-            item.style.display = "none";
-        });
+    // // runner , hide organizer buttons
+    // if (currentAccountType == "RUNNER") {
+    //     let organizerItems = document.querySelectorAll(".organizer-only");
+    //     organizerItems.forEach(item => {
+    //         item.style.display = "none";
+    //     });
         
-        let runnerItems = document.querySelectorAll(".runner-only");
-        runnerItems.forEach(item => {
-            item.style.display = "block";
-        });
-    }
+    //     let runnerItems = document.querySelectorAll(".runner-only");
+    //     runnerItems.forEach(item => {
+    //         item.style.display = "block";
+    //     });
+    // }
 
 
     // patch 
@@ -157,14 +157,57 @@ $(document).ready( () => {
 });
 
 // register button
-function register(buttonElement){
-    if (buttonElement.innerText.trim() === "Register") {    
-        buttonElement.classList.add("registered");
-        buttonElement.innerText = "Registered";
-        buttonElement.style.backgroundColor = "#707070";
-    } else {            
-        buttonElement.classList.remove("registered");
-        buttonElement.innerText = "Register";
-        buttonElement.style.backgroundColor = "";
+async function register(button) {
+    if (button.disabled) return;
+
+    const eventUrl = button.getAttribute('data-url');
+    const storageKey = `registered_${eventUrl}`;
+
+    button.disabled = true;
+    button.classList.add("REGISTERED");
+    button.innerText = "REGISTERING...";
+    button.style.backgroundColor = "#707070";
+
+    try {
+        const response = await fetch(`/race/edit/${eventUrl}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem(storageKey, "true");
+            button.innerText = "REGISTERED";
+            alert(data.message);
+            window.location.reload();
+        } else {
+            alert("Error: " + data.error);
+            button.disabled = false;
+            button.classList.remove("REGISTERED");
+            button.innerText = "REGISTER";
+            button.style.backgroundColor = "";
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+        alert("Could not connect to the server.");
+        button.disabled = false;
+        button.classList.remove("REGISTERED");
+        button.innerText = "REGISTER";
+        button.style.backgroundColor = "";
     }
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".race-register-button").forEach((button) => {
+        const eventUrl = button.getAttribute("data-url");
+        if (localStorage.getItem(`registered_${eventUrl}`) === "true") {
+            button.disabled = true;
+            button.classList.add("REGISTERED");
+            button.innerText = "REGISTERED";
+            button.style.backgroundColor = "#707070";
+        }
+    });
+});

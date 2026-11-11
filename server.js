@@ -128,36 +128,112 @@ app.get('/race/edit/:event_url', permitRoles("ORGANIZER"), (req, res) => {
     }
 });
 
-app.patch('/race/edit/:event_url', permitRoles("ORGANIZER"), (req, res) => {
+app.post('/races', permitRoles("ORGANIZER"), (req, res) => {
     try {
-        const { event_url } = req.params;
-        
-        // 1. Destructure the editable fields coming from your HTML form fields payload
-        const { name, date, location, info, timedBy} = req.body;
+        const { updateNameInput, updateURLInput, updateDateInput, updateLocationInput, updateInfoInput, updateMaxRunnersInput, updateTimedByInput} = req.body;
 
-        // 2. Find the index of the target race inside your in-memory array
-        const targetIndex = races.findIndex(item => 
-            item.event_url.toLowerCase() === event_url.toLowerCase()
-        );
-
-        if (targetIndex === -1) {
-            return res.status(404).json({ error: `Race not found for event: ${event_url}` });
+        // check if race already exists
+        if (races.some(item => item.name.toLowerCase() === updateNameInput.trim().toLowerCase())){
+            console.error("Race with inputted Name already exists.");
+            return res.status(409).send("Can't create race. A race with this Name already exists.");
         }
+        if (races.some(item => item.event_url.toLowerCase() === updateURLInput.trim().toLowerCase())){
+            console.error("Race with inputted URL already exists.");
+            return res.status(409).send("Can't create race. A race with this URL already exists.");
+        }
+        
 
-        // 3. Mutate the target fields inside the array if they were provided in the request
-        if (name) races[targetIndex].name = name;
-        if (date) races[targetIndex].date = date;
-        if (location) races[targetIndex].location = location;
-        if (info) races[targetIndex].info = info;
-        if (timedBy) races[targetIndex].timedBy = timedBy;
+        const newRace = {
+            name: updateNameInput.trim(),
+            event_url: updateURLInput.trim(),
+            date: updateDateInput,
+            location: updateLocationInput.trim(),
+            info: updateInfoInput.trim(),
+            currentRunners: 0, // set to 0
+            maxRunners: Number(updateMaxRunnersInput),
+            timedBy: updateTimedByInput.trim(),
+            // postedBy: res.locals.user.firstName + res.locals.user.lastName
+        };
 
-        // 4. Send a clean JSON success status back to your frontend JavaScript
-        return res.status(200).json({message: "Race configuration updated successfully!"});
+        // add to race
+        races.push(newRace);
+
+        console.log("Race created.");
+
+        return res.redirect('/races');
 
     } catch (error) {
-        console.error("Error processing race patch update:", error);
-        res.status(500).json({ error: "An internal server error occurred while updating the race." });
+        console.error("Error processing race creation:", error);
+        res.status(500).json({ error: "An internal server error occurred while creating the race." });
     }
+});
+
+app.patch('/race/edit/:event_url', (req, res) => {
+    if (req.session.user.accountType == "RUNNER")
+    {
+        try {
+            // get url
+            const { event_url } = req.params;
+
+            // find race
+            const targetRace = races.find(item => item.event_url.toLowerCase() === event_url.toLowerCase());
+
+            // if no race found
+            if (!targetRace){
+                return res.status(404).json({message: "Race not found"});
+            }
+
+            // if fill
+            if (targetRace.currentRunners >= targetRace.maxRunners) {
+                return res.status(400).json({ error: "This race is already full!" });
+            }
+
+            // increment
+            targetRace.currentRunners += 1;
+
+            return res.status(200).json({message: 'Registered!'});
+
+        } catch (error) {
+            console.error("Error processing race registration:", error);
+            res.status(500).json({ error: "An internal server error occurred while registering for the race." });
+        }
+    }
+    else if (req.session.user.accountType == "ORGANIZER")
+    {
+        try {
+            const { event_url } = req.params;
+            const { name, date, location, info, maxRunners, timedBy} = req.body;
+
+            // Find the index of the target race inside your in-memory array
+            const targetIndex = races.findIndex(item => 
+                item.event_url.toLowerCase() === event_url.toLowerCase()
+            );
+
+            if (targetIndex === -1) {
+                return res.status(404).json({ error: `Race not found for event: ${event_url}` });
+            }
+
+            // 3. Mutate the target fields inside the array if they were provided in the request
+            if (name) races[targetIndex].name = name;
+            if (date) races[targetIndex].date = date;
+            if (location) races[targetIndex].location = location;
+            if (info) races[targetIndex].info = info;
+            if (maxRunners) races[targetIndex].maxRunners = maxRunners;
+            if (timedBy) races[targetIndex].timedBy = timedBy;
+
+            // 4. Send a clean JSON success status back to your frontend JavaScript
+            return res.status(200).json({message: "Race configuration updated successfully!"});
+
+        } catch (error) {
+            console.error("Error processing race patch update:", error);
+            res.status(500).json({ error: "An internal server error occurred while updating the race." });
+        }
+    }
+    else
+    {
+        res.status(404).json({message: "Access denied."});
+    }
+        
 });
 
 
@@ -236,15 +312,15 @@ app.post("/login", (req, res) => {
             }
             bcrypt.compare(password, registeredUser.password, (err, result) => {
                 if(err){
-                console.error("Error comparing passwords.");
+                    console.error("Error comparing passwords.");
                 }else{
-                if (result) {
-                    req.session.user = registeredUser;
-                    // Pass the verified database user
-                    return res.redirect("/races");//, { user: registeredUser, races });
-                }else{
-                    res.send("Incorrect password.", registeredUser.password, password);
-                }
+                    if (result) {
+                        req.session.user = registeredUser;
+                        // Pass the verified database user
+                        return res.redirect("/races");//, { user: registeredUser, races });
+                    }else{
+                        res.send("Incorrect password.", registeredUser.password, password);
+                    }
                 }
             });
         }else{

@@ -24,6 +24,64 @@
 
     <main>
         <h2>Races</h2>
+        <% if(locals.user && user.accountType == "ORGANIZER"){%>
+            <!-- <button type="button" class="race-buttons" id="create-race-button"><b>+ RACE</b></button> -->
+            <div>
+                <h3>New Race</h3>
+                <hr>
+                <br>
+                <section>
+                    <form id="updateRaceForm" action="/races" method="POST">
+                        <div> <!--class="update-race">-->
+                            <label for="updateNameInput">Race Name: </label>
+                            <br>
+                            <input type="text" id="updateNameInput" name="updateNameInput" required>
+                        <!-- </div> -->
+
+                        <!-- <div class="update-race"> -->
+                            <label for="updateURLInput">Race url: </label>
+                            <br>
+                            <input type="text" id="updateURLInput" name="updateURLInput" required>
+                        <!-- </div> -->
+                            
+                        <!-- <div class="update-race"> -->
+                            <label for="updateDateInput">Date of Event: </label>
+                            <br>
+                            <input type="date" id="updateDateInput" name="updateDateInput" required>
+                        <!-- </div> -->
+
+                        <!-- <div class="update-race"> -->
+                            <label for="updateLocationInput">Location: </label>
+                            <br>
+                            <input type="text" id="updateLocationInput" name="updateLocationInput" required>
+                        <!-- </div> -->
+
+                        <!-- <div class="update-race"> -->
+                            <label for="updateInfoInput">Info: </label>
+                            <br>
+                            <textarea type="text" id="updateInfoInput" name="updateInfoInput" required></textarea>
+                        <!-- </div> -->
+
+                        <!-- <div class="update-race"> -->
+                            <label for="updateMaxRunnersInput">Max Participants: </label>
+                            <br>
+                            <input type="number" id="updateMaxRunnersInput" name="updateMaxRunnersInput" value="50" required>
+                        <!-- </div> -->
+
+                        <!-- <div class="update-race"> -->
+                            <label for="updateTimedByInput">Timed By: </label>
+                            <br>
+                            <input type="text" id="updateTimedByInput" name="updateTimedByInput" required>
+                        </div>
+
+                        <div class="update">
+                            <button id="update-button" type="submit" >CREATE</button>
+                        </div>
+                    </form>
+                </section>
+
+            </div>
+        <% } %>
         <% const today = new Date().toISOString().split('T')[0]; %>
 
 
@@ -74,7 +132,9 @@
                                         <li>Posted By: <%= race.postedBy %></li>
                                     </ul>
                                     <div class="buttons">
-                                        <a href="/race/<%= race.event_url %>" class="race-buttons runner-only">Results</a>
+                                        <% if(locals.user && user.accountType == "RUNNER"){%>
+                                            <a href="/race/<%= race.event_url %>" class="race-buttons runner-only">RESULTS</a>
+                                        <% } %>
                                     </div>
                                 </div>
                             </section>
@@ -105,9 +165,12 @@
                                         <li>Posted By: <%= race.postedBy %></li>
                                     </ul>
                                     <div class="buttons">
-                                        <a href="/race/edit/<%=race.event_url%>" class="race-buttons organizer-only">Edit</a>
-                                        <a href="/race/<%= race.event_url %>" class="race-buttons runner-only">Results</a>
-                                        <!-- <button type="button" class="race-buttons runner-only">Register</button> -->
+                                        <% if(locals.user && user.accountType == "ORGANIZER") {%>
+                                            <a href="/race/edit/<%=race.event_url%>" class="race-buttons organizer-only">EDIT</a>
+                                        <% } %>
+                                        <% if(locals.user && user.accountType == "RUNNER"){%>
+                                            <a href="/race/<%= race.event_url %>" class="race-buttons runner-only">RESULTS</a>
+                                        <% } %>                                        <!-- <button type="button" class="race-buttons runner-only">Register</button> -->
                                     </div>
                                 </div>
                             </section>
@@ -138,8 +201,17 @@
                                         <li>Posted By: <%= race.postedBy %></li>
                                     </ul>
                                     <div class="buttons">
-                                        <a href="/race/edit/<%=race.event_url%>" class="race-buttons organizer-only">Edit</a>
-                                        <button type="button" class="race-buttons runner-only race-register-button" onclick="register(this)">Register</button>
+                                        <% if(locals.user && user.accountType == "ORGANIZER") {%>
+                                            <a href="/race/edit/<%=race.event_url%>" class="race-buttons organizer-only">EDIT</a>
+                                        <% } %>
+                                        <% if(locals.user && user.accountType == "RUNNER"){%>
+                                            <% const isRegistered = race.registeredUsers && race.registeredUsers.includes(user.email.toLowerCase()); %>
+                                            <% if (isRegistered) { %>
+                                                <button type="button" class="race-buttons runner-only REGISTERED" style="background-color: #707070;" disabled>REGISTERED</button>
+                                            <% } else { %>
+                                                <button type="button" class="race-buttons runner-only race-register-button" data-url="<%= race.event_url %>" onclick="register(this)">REGISTER</button>
+                                            <% } %>
+                                        <% } %>  
                                     </div>
                                 </div>
                             </section>

@@ -32,7 +32,6 @@ const races = [
     info: "10K Run",
     currentRunners: 12,
     maxRunners: 50,
-    status: "closed",
     timedBy: "SpotOn",
     postedBy: "John Doe"
   },
@@ -44,7 +43,6 @@ const races = [
     info: "5K Run",
     currentRunners: 12,
     maxRunners: 50,
-    status: "closed",
     timedBy: "SpotOn",
     postedBy: "John Doe"
   },
@@ -56,7 +54,6 @@ const races = [
     info: "1 Mile Fun Run",
     currentRunners: 4,
     maxRunners: 50,
-    status: "open",
     timedBy: "SpotOn",
     postedBy: "John Doe"
   }
