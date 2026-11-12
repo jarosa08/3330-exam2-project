@@ -2,14 +2,13 @@ import express from "express";
 import bodyParser from "body-parser";
 import session from "express-session";
 
-import apiRoutes from "./routes/api.js";
-import basicRoutes from "./routes/basic.js"
-import racesRoutes from "./routes/races.js";
-import accountRoutes from "./routes/accounts.js";
-import raceRoutes from "./routes/race.js";
+import apiRoutes from "./routes/api.routes.js";
+import basicRoutes from "./routes/basic.routes.js"
+import racesRoutes from "./routes/races.routes.js";
+import accountRoutes from "./routes/accounts.routes.js";
+import raceRoutes from "./routes/race.routes.js";
 
 const app = express();
-const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -34,6 +33,4 @@ app.use('/races', racesRoutes);
 app.use('/login', accountRoutes);
 app.use('/race', raceRoutes);
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+export default app;

@@ -1,27 +1,3 @@
-import express from "express"
-const router = express.Router();
-
-const users = [
-  {
-    firstName: "John",
-    lastName: "Doe",
-    dob: "1999-01-02",
-    gender: "male",
-    email: "johndoe@gmail.com",
-    password: "123",
-    accountType: "ORGANIZER",
-  },
-  {
-    firstName: "Jane",
-    lastName: "Doe",
-    dob: "1999-01-02",
-    gender: "female",
-    email: "janedoe@gmail.com",
-    password: "123",
-    accountType: "RUNNER",
-  }
-];
-
 const races = [
   {
     name: "Edinburg 10K",
@@ -32,7 +8,8 @@ const races = [
     currentRunners: 12,
     maxRunners: 50,
     timedBy: "SpotOn",
-    postedBy: "John Doe"
+    postedBy: "John Doe",
+    registeredUsers: []
   },
   {
     name: "Edinburg 5K",
@@ -43,7 +20,8 @@ const races = [
     currentRunners: 12,
     maxRunners: 50,
     timedBy: "SpotOn",
-    postedBy: "John Doe"
+    postedBy: "John Doe",
+    registeredUsers: []
   },
   {
     name: "Edinburg Fun Run",
@@ -54,7 +32,8 @@ const races = [
     currentRunners: 4,
     maxRunners: 50,
     timedBy: "SpotOn",
-    postedBy: "John Doe"
+    postedBy: "John Doe",
+    registeredUsers: []
   }
 ];
 
@@ -129,27 +108,56 @@ const results = [
   }
 ];
 
+const listRaces = () => {
+  return races;
+}
 
-router.get("/races", (req, res)=>{
-  res.status(200).json(races);
-});
+const findRaceByName = (params) => {
+  return races.find(item => item.name.toLowerCase() === params.toLowerCase());
+}
 
-router.get("/results", (req, res)=>{
-  res.status(200).json(results);
-});
+const findRaceByURL = (params) => {
+  return races.find(item => item.event_url === params);
+}
 
-router.get("/results/:event_url", (req, res) => {
-  const { event_url } = req.params;
-  
-  // Find the specific item where race_info.event_url matches the parameter
-  const match = results.find(item => item.race_info.event_url === event_url);
-  
-  if (!match) {
-    return res.status(404).json({ error: "Race result not found" });
-  }
-  
-  res.status(200).json(match);
-});
+const createRace = (req) => {
+  const { updateNameInput, updateURLInput, updateDateInput, updateLocationInput, updateInfoInput, updateMaxRunnersInput, updateTimedByInput} = req.body;
 
-export default router;
-export {users, races, results};
+  const newRace = {
+      name: updateNameInput.trim(),
+      event_url: updateURLInput.trim(),
+      date: updateDateInput,
+      location: updateLocationInput.trim(),
+      info: updateInfoInput.trim(),
+      currentRunners: 0, // set to 0
+      maxRunners: Number(updateMaxRunnersInput),
+      timedBy: updateTimedByInput.trim(),
+      postedBy: req.session.user.firstName + " " + req.session.user.lastName
+  };
+
+  // add to race
+  races.push(newRace);
+}
+
+const updateRace = (req) => {
+  const { name, date, location, info, maxRunners, timedBy} = req.body;
+
+  let targetRace = findRaceByURL(req.params.event_url);
+
+  if (name) targetRace.name = name.trim();
+  if (date) targetRace.date = date;
+  if (location) targetRace.location = location.trim();
+  if (info) targetRace.info = info.trim();
+  if (maxRunners) targetRace.maxRunners = Number(maxRunners);
+  if (timedBy) targetRace.timedBy = timedBy.trim();
+}
+
+const listResults = () => {
+  return results;
+}
+
+const findRaceResults = (params) => {
+  return results.find(item => item.race_info.event_url.toLowerCase() === params.toLowerCase());
+}
+
+export default {listRaces, findRaceByName, findRaceByURL, createRace, updateRace, listResults, findRaceResults}
